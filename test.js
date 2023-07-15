@@ -2,6 +2,7 @@ require('dotenv').config();
 const {API_KEY} = process.env;
 const axios = require('axios');
 const {assert} = require('chai');
+const getBlockNumber = require("./getBlockNumber");
 
 describe('api key', () => {
     it('should be a valid api key', async () => {
@@ -16,5 +17,15 @@ describe('api key', () => {
         });
 
         assert.isAbove(parseInt(result), 0x40db451e4e74a0311e90);
+    });
+});
+
+
+describe('getBlockNumber', function () {
+    it('should get the current block number', async () => {
+        const blockNumber = await getBlockNumber();
+        const parsed = parseInt(blockNumber);
+        assert(!isNaN(parsed), `We expected you to return a block number, here is what you returned: ${blockNumber}`);
+        assert.isAbove(parseInt(blockNumber), 0xfde2cf);
     });
 });
