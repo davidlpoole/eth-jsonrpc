@@ -3,6 +3,7 @@ const {API_KEY} = process.env;
 const axios = require('axios');
 const {assert} = require('chai');
 const getBlockNumber = require("./getBlockNumber");
+const getBalance = require("./getBalance");
 
 describe('api key', () => {
     it('should be a valid api key', async () => {
@@ -27,5 +28,14 @@ describe('getBlockNumber', function () {
         const parsed = parseInt(blockNumber);
         assert(!isNaN(parsed), `We expected you to return a block number, here is what you returned: ${blockNumber}`);
         assert.isAbove(parseInt(blockNumber), 0xfde2cf);
+    });
+});
+
+describe('getBalance', () => {
+    it('should find the balance of the address with 10 ether', async () => {
+        const balance = await getBalance("0x3bfc20f0b9afcace800d73d2191166ff16540258");
+        const parsed = parseInt(balance);
+        assert(!isNaN(parsed), `We expected you to return a balance, here is what you returned: ${balance}`);
+        assert.isAbove(parsed, 0x40db451e4e74a0311e90);
     });
 });
