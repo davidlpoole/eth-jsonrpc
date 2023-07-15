@@ -5,6 +5,7 @@ const {assert} = require('chai');
 const getBlockNumber = require("./getBlockNumber");
 const getBalance = require("./getBalance");
 const getNonce = require("./getNonce");
+const getTotalTransactions = require("./getTotalTransactions");
 
 describe('api key', () => {
     it('should be a valid api key', async () => {
@@ -54,5 +55,21 @@ describe('getNonce', () => {
         const parsed = parseInt(nonce);
         assert(!isNaN(parsed), `We expected you to return a nonce, here is what you returned: ${nonce}`);
         assert.isAbove(parsed, 1015);
+    });
+});
+
+describe('getTotalTransactions', () => {
+    it('should work for an empty block', async () => {
+        const numTx = await getTotalTransactions('0x' + (12379).toString(16));
+        const parsed = parseInt(numTx);
+        assert(!isNaN(parsed), `We expected you to return a transactions count, here is what you returned: ${numTx}`);
+        assert.equal(parsed, 0);
+    });
+
+    it('should work for a recent block', async () => {
+        const numTx = await getTotalTransactions('0x' + (16642379).toString(16));
+        const parsed = parseInt(numTx);
+        assert(!isNaN(parsed), `We expected you to return a transactions count, here is what you returned: ${numTx}`);
+        assert.equal(parsed, 206);
     });
 });
