@@ -4,6 +4,7 @@ const axios = require('axios');
 const {assert} = require('chai');
 const getBlockNumber = require("./getBlockNumber");
 const getBalance = require("./getBalance");
+const getNonce = require("./getNonce");
 
 describe('api key', () => {
     it('should be a valid api key', async () => {
@@ -37,5 +38,21 @@ describe('getBalance', () => {
         const parsed = parseInt(balance);
         assert(!isNaN(parsed), `We expected you to return a balance, here is what you returned: ${balance}`);
         assert.isAbove(parsed, 0x40db451e4e74a0311e90);
+    });
+});
+
+describe('getNonce', () => {
+    it('should get the nonce for the zero address', async () => {
+        const nonce = await getNonce("0x0000000000000000000000000000000000000000");
+        const parsed = parseInt(nonce);
+        assert(!isNaN(parsed), `We expected you to return a nonce, here is what you returned: ${nonce}`);
+        assert.equal(parsed, 0);
+    });
+
+    it('should get the nonce for vitalik.eth', async () => {
+        const nonce = await getNonce("0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045");
+        const parsed = parseInt(nonce);
+        assert(!isNaN(parsed), `We expected you to return a nonce, here is what you returned: ${nonce}`);
+        assert.isAbove(parsed, 1015);
     });
 });
